@@ -32,7 +32,7 @@ public class MainLayout extends AppLayout {
     }
 
     private void createHeader() {
-        H1 logo = new H1("Auctions site");
+        H1 logo = new H1("CRM by PKB");
         logo.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.MEDIUM);
 
         UserDetails userDetails = securityService.getAuthenticatedUser();

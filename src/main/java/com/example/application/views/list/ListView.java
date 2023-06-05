@@ -2,13 +2,13 @@ package com.example.application.views.list;
 
 import com.example.application.data.entity.Contact;
 import com.example.application.data.service.CRMService;
+import com.example.application.security.SecurityService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -26,9 +26,11 @@ public class ListView extends VerticalLayout {
     ContactForm form;
     Dialog dialog = new Dialog();
     CRMService service;
+    SecurityService securityService;
 
-    public ListView(CRMService service) {
+    public ListView(CRMService service, SecurityService securityService) {
         this.service = service;
+        this.securityService = securityService;
         addClassName("list-view");
         configureForm();
         configureDialog();
@@ -107,11 +109,14 @@ public class ListView extends VerticalLayout {
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
+        var toolbar = new HorizontalLayout(filterText);
 
-        Button addContactButton = new Button("Add contact");
-        addContactButton.addClickListener(click -> addContact());
+        if (securityService.getAuthenticatedUser() != null) {
+            Button addContactButton = new Button("Add contact");
+            addContactButton.addClickListener(click -> addContact());
+            toolbar.add(addContactButton);
+        }
 
-        var toolbar = new HorizontalLayout(filterText, addContactButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
