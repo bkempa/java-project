@@ -82,7 +82,8 @@ public class ListView extends VerticalLayout {
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
-        grid.asSingleSelect().addValueChangeListener(event -> editContact(event.getValue()));
+        if (securityService.getAuthenticatedUser() != null)
+            grid.asSingleSelect().addValueChangeListener(event -> editContact(event.getValue()));
     }
     private Component getContent() {
         HorizontalLayout content = new HorizontalLayout(grid);
