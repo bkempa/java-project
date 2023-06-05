@@ -69,13 +69,21 @@ public class ListView extends VerticalLayout {
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
         grid.setColumns("firstName", "lastName", "email");
-        grid.addColumn(contact -> contact.getStatus().getName()).setHeader("Status");
-        grid.addColumn(contact -> contact.getCompany().getName()).setHeader("Company");
+
+        grid.addColumn(contact -> contact.getStatus().getName())
+                .setHeader("Status")
+                .setComparator(contact -> contact.getStatus().getName())
+                .setSortable(true);
+
+        grid.addColumn(contact -> contact.getCompany().getName())
+                .setHeader("Company")
+                .setComparator(contact -> contact.getCompany().getName())
+                .setSortable(true);
+
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.asSingleSelect().addValueChangeListener(event -> editContact(event.getValue()));
     }
-
     private Component getContent() {
         HorizontalLayout content = new HorizontalLayout(grid);
         content.addClassName("content");
